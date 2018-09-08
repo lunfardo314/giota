@@ -667,3 +667,25 @@ func (api *API) GetLatestInclusion(hash []Trytes) ([]bool, error) {
 	}
 	return resp.States, nil
 }
+
+//---------------------------------------------------------------
+// added by lunfardo
+type WereAddressesSpentFromResponse struct {
+	Duration int64  `json:"duration"`
+	States   []bool `json:"states"`
+}
+
+type WereAddressesSpentFromRequest struct {
+	Command   string    `json:"command"`
+	Addresses []Address `json:"addresses"`
+}
+
+func (api API) WereAddressesSpentFrom(addresses []Address) (*WereAddressesSpentFromResponse, error) {
+	resp := WereAddressesSpentFromResponse{}
+	err := api.do(&WereAddressesSpentFromRequest{
+		"wereAddressesSpentFrom",
+		addresses,
+	}, &resp)
+
+	return &resp, err
+}
